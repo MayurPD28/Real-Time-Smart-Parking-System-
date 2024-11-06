@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-image: url("{{ url_for('static', filename='images/index_background.jpg') }}");
+            background-color: #f1f1f1; /* Background color for the entire page */
+        }
+
+        .header {
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            padding: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: white; /* White color for the header text */
+        }
+
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            width: 80%; /* Adjust width as needed */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow for a floating effect */
+        }
+
+        .login-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .login-buttons button {
+            padding: 30px 60px; /* Increase padding for larger buttons */
+            margin: 0 10px;
+            font-size: 20px; /* Increase font size */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-buttons button:hover {
+            background-color: #29ba30;
+        }
+
+        .login-form {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .login-form label {
+            font-weight: bold;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-form input[type="submit"] {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>WELCOME TO MWD SMART PARKING</h1>
+    </div>
+
+    <div class="container">
+        <div class="login-buttons">
+            <button onclick="redirectToSlotMap()">VIEW SLOTS</button>
+            <button onclick="toggleForm('admin')">ADMIN PANEL</button>
+        </div>
+
+        <!-- Admin login form -->
+        <div class="login-form" id="admin-login-form">
+            <h2>Admin Login</h2>
+            <form action="/login/admin" method="POST">
+                <label for="admin_id">Admin ID:</label><br>
+                <input type="text" id="admin_id" name="admin_id" required><br><br>
+                <label for="admin_password">Password:</label><br>
+                <input type="password" id="admin_password" name="admin_password" required><br><br>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm(type) {
+            var formId = type + '-login-form';
+            var form = document.getElementById(formId);
+
+            // Toggle display of the form
+            if (form.style.display === 'block') {
+                form.style.display = 'none';
+            } else {
+                form.style.display = 'block';
+            }
+        }
+
+        function redirectToSlotMap() {
+            window.location.href = '/slotmap';
+        }
+    </script>
+</body>
+</html>

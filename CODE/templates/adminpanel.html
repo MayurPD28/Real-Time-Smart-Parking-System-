@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_slotmap.css') }}">
+    <style>
+        /* Additional styling for the admin panel */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #admin-panel {
+            max-width: 1200px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        #slot-map-container {
+            /* Add any specific styling for the slot map container */
+        }
+
+        #cam-feed-container {
+            /* Add any specific styling for the cam feed container */
+        }
+
+        #cam-feed {
+            /* Add any specific styling for the cam feed */
+            width: 100%;
+            height: auto;
+        }
+
+        #logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #logout-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Admin Panel</h1>
+
+    <div id="admin-panel">
+        <div id="slot-map-container">
+            <h2>Parking Slot Map</h2>
+            <div id="slot-counts">
+                <p id="used_slots">USED SLOTS: 0</p>
+                <p id="free_slots">FREE SLOTS: 6</p>
+            </div>
+            <div id="parking-lot">
+                <div class="slot" id="A1">A1</div>
+                <div class="slot" id="A2">A2</div>
+                <div class="slot" id="A3">A3</div>
+                <div class="slot" id="A4">A4</div>
+                <div class="slot" id="A5">A5</div>
+                <div class="slot" id="A6">A6</div>
+            </div>
+        </div>
+
+        <button id="logout-button" onclick="redirectToIndex()">Logout</button>
+
+        <div id="cam-feed-container">
+            <h2>Live Cam Feed</h2>
+            <img id="cam-feed" src="" alt="Live Cam Feed">
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            console.log('Connected to server');
+        });
+
+        socket.on('cam_feed', function(data) {
+            // Update the cam feed image source with the received frame data
+            document.getElementById('cam-feed').src = 'data:image/jpeg;base64,' + data.frame_bytes;
+        });
+
+        socket.on('parking_status_update', function(data) {
+            console.log('Received parking status update:', data);
+
+            // Update slot counts
+            document.getElementById('used_slots').textContent = "USED SLOTS: " + data.used_slots;
+            document.getElementById('free_slots').textContent = "FREE SLOTS: " + data.free_slots;
+
+            // Update slot colors based on parking_status
+            var occupied_slots = data.occupied_slots;
+
+            // Update slot colors
+            var slot_names = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6'];
+            for (var i = 0; i < slot_names.length; i++) {
+                var slot_id = slot_names[i];
+                if (occupied_slots.includes(slot_id)) {
+                    document.getElementById(slot_id).classList.add('occupied');
+                    document.getElementById(slot_id).classList.remove('free');
+                } else {
+                    document.getElementById(slot_id).classList.remove('occupied');
+                    document.getElementById(slot_id).classList.add('free');
+                }
+            }
+        });
+
+        function redirectToIndex() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

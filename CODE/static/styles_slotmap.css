@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-image: url("{{ url_for('static', filename='images/index_background5.jpg') }}"); /* Replace with the path to your background image */
+    /* background-color: #f4f4f4; */
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+#used_slots{
+    font-size: x-large;
+    font-weight: bolder;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#free_slots{
+    font-size: x-large;
+    font-weight: bolder;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#slot-counts p {
+    display: inline;
+    margin-right: 20px; /* Adjust the margin as needed */
+}
+
+#parking-lot {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 slots */
+    gap: 5px;
+    max-width: 800px; /* Adjusted max-width */
+    margin: 20px auto;
+}
+
+.slot {
+    width: 120px; /* Adjusted slot width */
+    height: 180px; /* Adjusted slot height */
+    background-color: #8bc34a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.slot.occupied {
+    background-color: #f43636; /* Color for occupied slot */
+    cursor: not-allowed;
+}
+
+.slot.free {
+    background-color: #8bc34a; /* Color for free slot */
+}
+
+.road {
+    grid-column: span 6; /* Span 6 columns */
+    height: 20px; /* Adjusted road height */
+    background: #666;
+}
+
+@media (max-width: 620px) {
+    #parking-lot {
+        grid-template-columns: repeat(3, 1fr); /* Adjusted for smaller screens */
+    }
+    .road {
+        grid-column: span 3;
+    }
+}
